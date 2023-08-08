@@ -4,6 +4,14 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 /**
@@ -17,11 +25,17 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+  private final CANSparkMax m_leftDrive = new CANSparkMax(4, MotorType.kBrushless);
+  public final XboxController driver = new XboxController(0);
+ // private final JoystickButton RB = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
   @Override
   public void robotInit() {}
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    m_leftDrive.set(0.5);
+}
+
 
   @Override
   public void autonomousInit() {}
