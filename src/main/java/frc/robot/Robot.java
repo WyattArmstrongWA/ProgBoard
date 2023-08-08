@@ -26,14 +26,20 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   private final CANSparkMax m_leftDrive = new CANSparkMax(4, MotorType.kBrushless);
+
   public final XboxController driver = new XboxController(0);
- // private final JoystickButton RB = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+  
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    
+  }
 
   @Override
   public void robotPeriodic() {
-    m_leftDrive.set(0.5);
+    if (driver.getYButtonPressed()){
+      m_leftDrive.set(0.6);
+  }
+
 }
 
 
