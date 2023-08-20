@@ -4,15 +4,15 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.TimedRobot;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,20 +25,41 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  private final CANSparkMax m_leftDrive = new CANSparkMax(4, MotorType.kBrushless);
+  //private final CANSparkMax m_leftDrive = new CANSparkMax(4, MotorType.kBrushless);
+  final TalonSRX motor1 = new TalonSRX(5);
+  XboxController driver = new XboxController(0);
 
-  public final XboxController driver = new XboxController(0);
   
   @Override
   public void robotInit() {
-    
+
   }
 
   @Override
   public void robotPeriodic() {
-    if (driver.getYButtonPressed()){
-      m_leftDrive.set(0.6);
-  }
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
+
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
+
+    double turretX = 0;
+    if(x>2) {
+      turretX = -0.2;
+    } else if (x<-2) {
+      turretX = 0.2;
+    } else {
+      turretX = 0;
+    }
+    motor1.set(ControlMode.PercentOutput, driver.getRightX());
+  motor1.set(ControlMode.PercentOutput, turretX);
 
 }
 
