@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
       turretX = 0.2;
     } else {
       turretX = 0;
+      //set x=0
     }
     motor1.set(ControlMode.PercentOutput, driver.getRightX());
   motor1.set(ControlMode.PercentOutput, turretX);
